@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Fault Prediction - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298); /* Deep blue gradient */
+            overflow: hidden;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px 40px;
+            width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: white;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        p.subtitle {
+            font-size: 16px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        .input-group label {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+            transition: 0.3s ease;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+        .input-group input:focus {
+            border-color: #00d4ff;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label {
+            top: -10px;
+            left: 15px;
+            font-size: 12px;
+            background: #2a5298;
+            padding: 0 8px;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 8px 20px rgba(0, 114, 255, 0.3);
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 114, 255, 0.5);
+        }
+        .error {
+            color: #ff6b6b;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="icon">⚡</div>
+        <h1>Login</h1>
+        <p class="subtitle">Electrical Fault Prediction System</p>
+
+        {% if form.errors %}
+            <p class="error">Invalid username or password. Please try again.</p>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="username" required>
+                <label>Username</label>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" required>
+                <label>Password</label>
+            </div>
+            <button type="submit">Log In</button>
+        </form>
+    </div>
+</body>
+</html>

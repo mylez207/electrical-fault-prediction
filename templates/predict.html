@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Fault Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .logout:hover {
+            text-decoration: underline;
+        }
+        .form-section {
+            padding: 40px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .field {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result {
+            margin-top: 40px;
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .fault {
+            background: #f8d7da;
+            color: #721c24;
+            border: 3px solid #dc3545;
+        }
+        .no-fault {
+            background: #d4edda;
+            color: #155724;
+            border: 3px solid #28a745;
+        }
+        .confidence {
+            font-size: 18px;
+            margin-top: 15px;
+            font-weight: normal;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/logout/" class="logout">Logout</a>
+            <h1>⚡ Electrical Fault Prediction</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Enter current system parameters to detect potential faults</p>
+        </header>
+
+        <div class="form-section">
+            <form method="post">
+                {% csrf_token %}
+                <div class="grid">
+                    <div class="field">
+                        <label>Humidity (%)</label>
+                        <input type="number" step="0.1" name="humidity" value="50" required>
+                    </div>
+                    <div class="field">
+                        <label>Rainfall (mm)</label>
+                        <input type="number" step="0.1" name="rainfall" value="10" required>
+                    </div>
+                    <div class="field">
+                        <label>Lightning (1=yes, 0=no)</label>
+                        <input type="number" min="0" max="1" name="lightning" value="0" required>
+                    </div>
+                    <div class="field">
+                        <label>Temperature (°C)</label>
+                        <input type="number" step="0.1" name="temperature" value="30" required>
+                    </div>
+                    <div class="field">
+                        <label>Wind Speed (km/h)</label>
+                        <input type="number" step="0.1" name="wind_speed" value="15" required>
+                    </div>
+                    <div class="field">
+                        <label>Weather Severity (1-10)</label>
+                        <input type="number" min="1" max="10" name="weather_severity" value="5" required>
+                    </div>
+                    <div class="field">
+                        <label>Voltage Unbalance (%)</label>
+                        <input type="number" step="0.01" name="voltage_unbalance" value="0.5" required>
+                    </div>
+                    <div class="field">
+                        <label>Current Unbalance (%)</label>
+                        <input type="number" step="0.01" name="current_unbalance" value="0.5" required>
+                    </div>
+                    <div class="field">
+                        <label>Power Factor</label>
+                        <input type="number" step="0.01" min="0" max="1" name="power_factor" value="0.95" required>
+                    </div>
+                    <div class="field">
+                        <label>Frequency (Hz)</label>
+                        <input type="number" step="0.1" name="frequency" value="50" required>
+                    </div>
+                    <div class="field">
+                        <label>Line Loading (%)</label>
+                        <input type="number" step="0.1" name="line_loading" value="70" required>
+                    </div>
+                    <div class="field">
+                        <label>Active Power (MW)</label>
+                        <input type="number" step="0.1" name="active_power" value="100" required>
+                    </div>
+                    <div class="field">
+                        <label>Reactive Power (MVAR)</label>
+                        <input type="number" step="0.1" name="reactive_power" value="50" required>
+                    </div>
+                    <div class="field">
+                        <label>Equipment Age (years)</label>
+                        <input type="number" min="0" name="equipment_age" value="10" required>
+                    </div>
+                    <div class="field">
+                        <label>Thermal Stress (1-10)</label>
+                        <input type="number" min="1" max="10" name="thermal_stress" value="5" required>
+                    </div>
+                    <div class="field">
+                        <label>Risk Score (0-100)</label>
+                        <input type="number" min="0" max="100" name="risk_score" value="40" required>
+                    </div>
+                </div>
+
+                <button type="submit">Predict Fault Status</button>
+            </form>
+
+            {% if result %}
+            <div class="result {{ result.class }}">
+                {% if result.prediction == 1 %}
+                    🚨 <strong>FAULT DETECTED</strong> 🚨
+                {% else %}
+                    ✅ <strong>NO FAULT - System Safe</strong> ✅
+                {% endif %}
+                <div class="confidence">
+                    Model Confidence: {{ result.confidence }}%
+                </div>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="result fault">
+                <strong>Error:</strong> {{ error }}
+            </div>
+            {% endif %}
+        </div>
+
+        <footer>
+            Powered by Random Forest ML Model | Developed with Django
+        </footer>
+    </div>
+</body>
+</html>

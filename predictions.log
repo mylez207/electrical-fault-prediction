@@ -1,0 +1,66 @@
+2026-01-06 22:47:08,239 - INFO - Prediction made: 0, Confidence: 0.8900509560805854
+2026-01-06 22:47:08,239 - INFO - Input features: [75.5, 10.2, 0.0, 28.5, 15.3, 2.0, 1.5, 2.1, 0.92, 50.0, 75.0, 850.0, 320.0, 8.5, 65.0, 0.65]
+2026-01-06 23:53:36,507 - WARNING - Not Found: /
+2026-01-06 23:54:41,974 - WARNING - Not Found: /
+2026-01-06 23:56:47,125 - WARNING - Unauthorized: /api/predict/
+2026-01-06 23:58:22,961 - WARNING - Unauthorized: /api/predict/
+2026-01-06 23:59:15,562 - WARNING - Unauthorized: /api/predict/
+2026-01-06 23:59:33,773 - WARNING - Unauthorized: /api/predict/
+2026-01-06 23:59:47,141 - WARNING - Unauthorized: /api/predict/
+2026-01-07 00:11:04,629 - WARNING - Not Found: /
+2026-01-07 00:14:27,868 - INFO - C:\Users\MAVERICK\ml_api\prediction_api\urls.py changed, reloading.
+2026-01-07 00:14:33,796 - INFO - C:\Users\MAVERICK\ml_api\prediction_api\urls.py changed, reloading.
+2026-01-07 00:17:05,182 - WARNING - Unauthorized: /api/predict/
+2026-01-07 00:17:05,186 - WARNING - Unauthorized: /api/predict/
+2026-01-07 00:17:10,541 - WARNING - Not Found: /api/
+2026-01-07 00:22:15,870 - WARNING - Unauthorized: /api/predict/
+2026-01-07 00:24:29,087 - WARNING - Unauthorized: /api/predict/
+2026-01-07 00:48:08,450 - INFO - C:\Users\MAVERICK\ml_api\predictor\urls.py changed, reloading.
+2026-01-07 00:50:15,244 - INFO - C:\Users\MAVERICK\ml_api\predictor\urls.py changed, reloading.
+2026-01-07 00:53:51,821 - INFO - C:\Users\MAVERICK\ml_api\prediction_api\settings.py changed, reloading.
+2026-01-07 00:54:15,606 - ERROR - Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\core\handlers\base.py", line 221, in _get_response
+    response = response.render()
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: login.html
+2026-01-07 01:02:20,591 - ERROR - Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\core\handlers\base.py", line 221, in _get_response
+    response = response.render()
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\MAVERICK\ml_api\masalla\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: login.html
+2026-01-07 13:46:14,709 - WARNING - Unauthorized: /api/predict/
+2026-01-07 14:03:38,716 - WARNING - Not Found: /api/auth/login/
+2026-01-07 14:05:53,241 - INFO - C:\Users\MAVERICK\ml_api\prediction_api\settings.py changed, reloading.
+2026-01-07 14:06:13,426 - INFO - API Prediction: 0, Confidence: 0.9000606210088072
+2026-01-07 14:07:26,379 - WARNING - Bad Request: /api/predict/
+2026-01-07 14:08:06,679 - WARNING - Bad Request: /api/predict/
+2026-01-07 14:09:01,679 - WARNING - Bad Request: /api/predict/
+2026-01-07 14:10:06,114 - WARNING - Bad Request: /api/predict/
+2026-01-07 14:10:57,249 - WARNING - Bad Request: /api/predict/
+2026-01-07 16:16:57,880 - INFO - Web prediction: 0, Confidence: 0.9000606210088072
+2026-01-07 16:17:48,956 - INFO - Web prediction: 0, Confidence: 0.9000606210088072
+2026-01-07 16:18:36,522 - INFO - Web prediction: 0, Confidence: 0.9000606210088072
+2026-01-07 16:20:31,494 - INFO - Web prediction: 0, Confidence: 0.9000606210088072
+2026-01-07 16:31:35,977 - INFO - C:\Users\MAVERICK\ml_api\predictor\views.py changed, reloading.
