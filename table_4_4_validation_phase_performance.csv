@@ -1,0 +1,4 @@
+Model,Accuracy,Precision,Recall,F1-Score,ROC-AUC,Generalization
+Random Forest,0.8456,0.7165,0.8456,0.7748,0.511,Good
+Logistic Regression,0.842,0.7132,0.842,0.7719,0.5148,Stable
+Gradient Boosting,0.8412,0.711,0.8412,0.77,0.5065,Moderate

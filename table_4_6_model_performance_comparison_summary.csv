@@ -1,0 +1,4 @@
+Phase,Best Accuracy,Best F1-Score,Best AUC,Best Overall
+Training,Gradient Boosting (98.04%),Gradient Boosting (0.9802),Gradient Boosting (0.9983),Gradient Boosting
+Validation,Random Forest (84.56%),Random Forest (0.7748),Logistic Regression (0.5148),Random Forest
+Testing,Random Forest (84.31%),Random Forest (0.7721),Logistic Regression (0.5182),Random Forest

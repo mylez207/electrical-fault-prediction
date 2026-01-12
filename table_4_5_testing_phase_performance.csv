@@ -1,0 +1,4 @@
+Model,Accuracy,Precision,Recall,F1-Score,ROC-AUC,Deployment Suitability
+Random Forest,0.8431,0.714,0.8431,0.7721,0.5157,Recommended
+Logistic Regression,0.8395,0.7105,0.8395,0.769,0.5182,Alternative
+Gradient Boosting,0.838,0.709,0.838,0.7681,0.5089,Limited
