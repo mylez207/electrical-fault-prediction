@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+from utils import get_high_risk_params
 from .serializers import PredictionSerializer
 from .models import PredictionHistory
 import joblib
@@ -89,6 +91,83 @@ def make_prediction(features):
 
 
 # Web Interface View - Now uses individual form fields (no more JSON input)
+# @login_required
+# def predict_view(request):
+#     result = None
+#     error = None
+
+#     if request.method == "POST":
+#         try:
+#             # Read each field individually from the form
+#             features = [
+#                 float(request.POST['humidity']),
+#                 float(request.POST['rainfall']),
+#                 float(request.POST['lightning']),  # Changed to float for consistency
+#                 float(request.POST['temperature']),
+#                 float(request.POST['wind_speed']),
+#                 float(request.POST['weather_severity']),  # Changed to float
+#                 float(request.POST['voltage_unbalance']),
+#                 float(request.POST['current_unbalance']),
+#                 float(request.POST['power_factor']),
+#                 float(request.POST['frequency']),
+#                 float(request.POST['line_loading']),
+#                 float(request.POST['active_power']),
+#                 float(request.POST['reactive_power']),
+#                 float(request.POST['equipment_age']),  # Changed to float
+#                 float(request.POST['thermal_stress']),  # Changed to float
+#                 float(request.POST['risk_score']),
+#             ]
+
+#             # Make real prediction using the shared function (auto-adds time features)
+#             pred_result = make_prediction(features)
+
+#             # Save prediction to database
+#             PredictionHistory.objects.create(
+#                 humidity=features[0],
+#                 rainfall=features[1],
+#                 lightning=features[2],
+#                 temperature=features[3],
+#                 wind_speed=features[4],
+#                 weather_severity=features[5],
+#                 voltage_unbalance=features[6],
+#                 current_unbalance=features[7],
+#                 power_factor=features[8],
+#                 frequency=features[9],
+#                 line_loading=features[10],
+#                 active_power=features[11],
+#                 reactive_power=features[12],
+#                 equipment_age=features[13],
+#                 thermal_stress=features[14],
+#                 risk_score=features[15],
+#                 prediction=pred_result['prediction'],
+#                 confidence=pred_result['confidence']
+#             )
+
+#             # Log the prediction
+#             logger.info(f"Web prediction - User: {request.user.username} | Fault: {pred_result['prediction']} | Confidence: {pred_result['confidence']:.2f}")
+
+#             # Prepare simple result for the template
+#             result = {
+#                 'prediction': pred_result['prediction'],  # 0 or 1
+#                 'confidence': round(pred_result['confidence'] * 100, 1),  # percentage
+#                 'probability_fault': round(pred_result['probability_fault'] * 100, 1),
+#                 'class': 'fault' if pred_result['prediction'] == 1 else 'no-fault'
+#             }
+
+#         except ValueError as ve:
+#             error = "Please enter valid numbers in all fields."
+#             logger.error(f"Web prediction ValueError: {str(ve)}")
+#         except KeyError as ke:
+#             error = f"Missing field: {str(ke)}"
+#             logger.error(f"Web prediction KeyError: {str(ke)}")
+#         except Exception as e:
+#             error = f"Prediction failed: {str(e)}"
+#             logger.error(f"Web prediction error: {str(e)}")
+
+#     return render(request, 'predict.html', {
+#         'result': result,
+#         'error': error
+#     })
 @login_required
 def predict_view(request):
     result = None
@@ -96,60 +175,55 @@ def predict_view(request):
 
     if request.method == "POST":
         try:
-            # Read each field individually from the form
-            features = [
-                float(request.POST['humidity']),
-                float(request.POST['rainfall']),
-                float(request.POST['lightning']),  # Changed to float for consistency
-                float(request.POST['temperature']),
-                float(request.POST['wind_speed']),
-                float(request.POST['weather_severity']),  # Changed to float
-                float(request.POST['voltage_unbalance']),
-                float(request.POST['current_unbalance']),
-                float(request.POST['power_factor']),
-                float(request.POST['frequency']),
-                float(request.POST['line_loading']),
-                float(request.POST['active_power']),
-                float(request.POST['reactive_power']),
-                float(request.POST['equipment_age']),  # Changed to float
-                float(request.POST['thermal_stress']),  # Changed to float
-                float(request.POST['risk_score']),
-            ]
+            # ────────────────────────────────────────────────
+            # Read form values (same as before)
+            # But now also create a dict for easier access
+            # ────────────────────────────────────────────────
+            data = {
+                'humidity': float(request.POST['humidity']),
+                'rainfall': float(request.POST['rainfall']),
+                'lightning': float(request.POST['lightning']),
+                'temperature': float(request.POST['temperature']),
+                'wind_speed': float(request.POST['wind_speed']),
+                'weather_severity': float(request.POST['weather_severity']),
+                'voltage_unbalance': float(request.POST['voltage_unbalance']),
+                'current_unbalance': float(request.POST['current_unbalance']),
+                'power_factor': float(request.POST['power_factor']),
+                'frequency': float(request.POST['frequency']),
+                'line_loading': float(request.POST['line_loading']),
+                'active_power': float(request.POST['active_power']),
+                'reactive_power': float(request.POST['reactive_power']),
+                'equipment_age': float(request.POST['equipment_age']),
+                'thermal_stress': float(request.POST['thermal_stress']),
+                'risk_score': float(request.POST['risk_score']),
+            }
 
-            # Make real prediction using the shared function (auto-adds time features)
+            features = list(data.values())  # still list for model
+
             pred_result = make_prediction(features)
 
-            # Save prediction to database
+            # Save to DB (you can use data dict here too)
             PredictionHistory.objects.create(
-                humidity=features[0],
-                rainfall=features[1],
-                lightning=features[2],
-                temperature=features[3],
-                wind_speed=features[4],
-                weather_severity=features[5],
-                voltage_unbalance=features[6],
-                current_unbalance=features[7],
-                power_factor=features[8],
-                frequency=features[9],
-                line_loading=features[10],
-                active_power=features[11],
-                reactive_power=features[12],
-                equipment_age=features[13],
-                thermal_stress=features[14],
-                risk_score=features[15],
+                **data,  # nice shortcut
                 prediction=pred_result['prediction'],
                 confidence=pred_result['confidence']
             )
 
-            # Log the prediction
             logger.info(f"Web prediction - User: {request.user.username} | Fault: {pred_result['prediction']} | Confidence: {pred_result['confidence']:.2f}")
 
-            # Prepare simple result for the template
+            # ────────────────────────────────────────────────
+            # NEW: High-risk summary (only if fault)
+            # ────────────────────────────────────────────────
+            high_params = []
+            if pred_result['prediction'] == 1:
+                high_params = get_high_risk_params(data)
+
             result = {
-                'prediction': pred_result['prediction'],  # 0 or 1
-                'confidence': round(pred_result['confidence'] * 100, 1),  # percentage
+                'prediction': pred_result['prediction'],
+                'confidence': round(pred_result['confidence'] * 100, 1),
                 'probability_fault': round(pred_result['probability_fault'] * 100, 1),
-                'class': 'fault' if pred_result['prediction'] == 1 else 'no-fault'
+                'class': 'fault' if pred_result['prediction'] == 1 else 'no-fault',
+                'high_params': high_params   # ← new key
             }
 
         except ValueError as ve:

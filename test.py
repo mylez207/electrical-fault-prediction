@@ -5,7 +5,7 @@ import json
 print("Step 1: Logging in...")
 login_url = "http://127.0.0.1:8000/api/auth/login/"
 login_data = {
-    "username": "amina",  # Use your superuser username
+    "username": "Erick",  # Use your superuser username
     "password": "123456789"  # Use your superuser password
 }
 

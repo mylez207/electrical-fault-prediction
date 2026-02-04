@@ -66,3 +66,8 @@ django.template.exceptions.TemplateDoesNotExist: login.html
 2026-01-07 16:31:35,977 - INFO - C:\Users\MAVERICK\ml_api\predictor\views.py changed, reloading.
 2026-01-07 16:32:41,598 - INFO - Web prediction - User: amina | Fault: 0 | Confidence: 0.70
 2026-01-07 16:33:57,380 - INFO - Web prediction - User: amina | Fault: 0 | Confidence: 0.70
+2026-02-04 12:02:05,070 - WARNING - Not Found: /favicon.ico
+2026-02-04 13:32:38,321 - INFO - C:\Users\MAVERICK\ml_api\predictor\views.py changed, reloading.
+2026-02-04 13:34:36,907 - INFO - C:\Users\MAVERICK\ml_api\predictor\views.py changed, reloading.
+2026-02-04 13:34:48,251 - INFO - Web prediction - User: Erick | Fault: 0 | Confidence: 0.68
+2026-02-04 13:35:08,034 - INFO - Web prediction - User: Erick | Fault: 1 | Confidence: 0.97

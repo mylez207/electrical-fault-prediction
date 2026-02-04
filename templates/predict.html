@@ -1,224 +1,1419 @@
-<!DOCTYPE html>
+<!-- <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transmission Line Electrical Prediction System</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f5f7fa;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        h1 {
-            margin: 0;
-            font-size: 32px;
-        }
-        .logout {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-        }
-        .logout:hover {
-            text-decoration: underline;
-        }
-        .form-section {
-            padding: 40px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .field {
-            margin-bottom: 10px;
-        }
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        input:focus {
-            border-color: #667eea;
-            outline: none;
-        }
-        button {
-            width: 100%;
-            padding: 16px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 30px;
-        }
-        button:hover {
-            background: #218838;
-        }
-        .result {
-            margin-top: 40px;
-            padding: 30px;
-            text-align: center;
-            border-radius: 12px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .fault {
-            background: #f8d7da;
-            color: #721c24;
-            border: 3px solid #dc3545;
-        }
-        .no-fault {
-            background: #d4edda;
-            color: #155724;
-            border: 3px solid #28a745;
-        }
-        .confidence {
-            font-size: 18px;
-            margin-top: 15px;
-            font-weight: normal;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 14px;
-        }
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #2d74dd;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+      h1 {
+        margin: 0;
+        font-size: 32px;
+      }
+      .logout {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        background-color: #e74c3c; /* Red color */
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background 0.3s ease;
+      }
+      .logout:hover {
+        background-color: #c0392b;
+      }
+      .form-section {
+        padding: 40px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .field {
+        margin-bottom: 10px;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+      }
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      input:focus {
+        border-color: #667eea;
+        outline: none;
+      }
+      button {
+        width: 100%;
+        padding: 16px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 30px;
+      }
+      button:hover {
+        background: #218838;
+      }
+      .result {
+        margin-top: 40px;
+        padding: 30px;
+        text-align: center;
+        border-radius: 12px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .fault {
+        background: #f8d7da;
+        color: #721c24;
+        border: 3px solid #dc3545;
+      }
+      .no-fault {
+        background: #d4edda;
+        color: #155724;
+        border: 3px solid #28a745;
+      }
+      .confidence {
+        font-size: 18px;
+        margin-top: 15px;
+        font-weight: normal;
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+        font-size: 14px;
+      }
+
+      .status {
+        display: block;
+        margin-top: 6px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .low {
+        color: #155724;
+      } /* green */
+      .moderate {
+        color: #856404;
+      } /* orange/darker yellow */
+      .high {
+        color: #721c24;
+      } /* red */
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <a href="/logout/" class="logout">Logout</a>
-            <h1>⚡ Transmission Line Electrical Prediction System</h1>
-            <p style="margin: 10px 0 0; opacity: 0.9;">Enter current system parameters to detect potential faults</p>
-        </header>
+      <header>
+        <a href="/logout/" class="logout">Logout</a>
+        <h1>⚡ Transmission Line Electrical Prediction System</h1>
+        <p style="margin: 10px 0 0; opacity: 0.9">
+          Enter current system parameters to detect potential faults
+        </p>
+      </header>
 
-        <div class="form-section">
-            <form method="post">
-                {% csrf_token %}
-                <div class="grid">
-                    <div class="field">
-                        <label>Humidity (%)</label>
-                        <input type="number" step="0.1" name="humidity" value="50" required>
-                    </div>
-                    <div class="field">
-                        <label>Rainfall (mm)</label>
-                        <input type="number" step="0.1" name="rainfall" value="10" required>
-                    </div>
-                    <div class="field">
-                        <label>Lightning (1=yes, 0=no)</label>
-                        <input type="number" min="0" max="1" name="lightning" value="0" required>
-                    </div>
-                    <div class="field">
-                        <label>Temperature (°C)</label>
-                        <input type="number" step="0.1" name="temperature" value="30" required>
-                    </div>
-                    <div class="field">
-                        <label>Wind Speed (km/h)</label>
-                        <input type="number" step="0.1" name="wind_speed" value="15" required>
-                    </div>
-                    <div class="field">
-                        <label>Weather Severity (1-10)</label>
-                        <input type="number" min="1" max="10" name="weather_severity" value="5" required>
-                    </div>
-                    <div class="field">
-                        <label>Voltage Unbalance (%)</label>
-                        <input type="number" step="0.01" name="voltage_unbalance" value="0.5" required>
-                    </div>
-                    <div class="field">
-                        <label>Current Unbalance (%)</label>
-                        <input type="number" step="0.01" name="current_unbalance" value="0.5" required>
-                    </div>
-                    <div class="field">
-                        <label>Power Factor</label>
-                        <input type="number" step="0.01" min="0" max="1" name="power_factor" value="0.95" required>
-                    </div>
-                    <div class="field">
-                        <label>Frequency (Hz)</label>
-                        <input type="number" step="0.1" name="frequency" value="50" required>
-                    </div>
-                    <div class="field">
-                        <label>Line Loading (%)</label>
-                        <input type="number" step="0.1" name="line_loading" value="70" required>
-                    </div>
-                    <div class="field">
-                        <label>Active Power (MW)</label>
-                        <input type="number" step="0.1" name="active_power" value="100" required>
-                    </div>
-                    <div class="field">
-                        <label>Reactive Power (MVAR)</label>
-                        <input type="number" step="0.1" name="reactive_power" value="50" required>
-                    </div>
-                    <div class="field">
-                        <label>Equipment Age (years)</label>
-                        <input type="number" min="0" name="equipment_age" value="10" required>
-                    </div>
-                    <div class="field">
-                        <label>Thermal Stress (1-10)</label>
-                        <input type="number" min="1" max="10" name="thermal_stress" value="5" required>
-                    </div>
-                    <div class="field">
-                        <label>Risk Score (0-100)</label>
-                        <input type="number" min="0" max="100" name="risk_score" value="40" required>
-                    </div>
-                </div>
-
-                <button type="submit">Predict Fault Status</button>
-            </form>
-
-            {% if result %}
-            <div class="result {{ result.class }}">
-                {% if result.prediction == 1 %}
-                    🚨 <strong>FAULT DETECTED</strong> 🚨
-                {% else %}
-                    ✅ <strong>NO FAULT - System Safe</strong> ✅
-                {% endif %}
-                <div class="confidence">
-                    Model Confidence: {{ result.confidence }}%
-                </div>
+      <div class="form-section">
+        <form method="post">
+          {% csrf_token %}
+          <div class="grid">
+            <div class="field">
+              <label>Humidity (%)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="humidity"
+                value="50"
+                required
+              />
             </div>
-            {% endif %}
-
-            {% if error %}
-            <div class="result fault">
-                <strong>Error:</strong> {{ error }}
+            <div class="field">
+              <label>Rainfall (mm)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="rainfall"
+                value="10"
+                required
+              />
             </div>
-            {% endif %}
+            <div class="field">
+              <label>Lightning (1=yes, 0=no)</label>
+              <input
+                type="number"
+                min="0"
+                max="1"
+                name="lightning"
+                value="0"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Temperature (°C)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="temperature"
+                value="30"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Wind Speed (km/h)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="wind_speed"
+                value="15"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Weather Severity (1-10)</label>
+              <input
+                type="number"
+                min="1"
+                max="10"
+                name="weather_severity"
+                value="5"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Voltage Unbalance (%)</label>
+              <input
+                type="number"
+                step="0.01"
+                name="voltage_unbalance"
+                value="0.5"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Current Unbalance (%)</label>
+              <input
+                type="number"
+                step="0.01"
+                name="current_unbalance"
+                value="0.5"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Power Factor</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="1"
+                name="power_factor"
+                value="0.95"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Frequency (Hz)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="frequency"
+                value="50"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Line Loading (%)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="line_loading"
+                value="70"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Active Power (MW)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="active_power"
+                value="100"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Reactive Power (MVAR)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="reactive_power"
+                value="50"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Equipment Age (years)</label>
+              <input
+                type="number"
+                min="0"
+                name="equipment_age"
+                value="10"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Thermal Stress (1-10)</label>
+              <input
+                type="number"
+                min="1"
+                max="10"
+                name="thermal_stress"
+                value="5"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Risk Score (0-100)</label>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                name="risk_score"
+                value="40"
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit">Predict Fault Status</button>
+        </form>
+
+        {% if result %}
+        <div class="result {{ result.class }}">
+          {% if result.prediction == 1 %} 🚨 <strong>FAULT DETECTED</strong> 🚨
+          {% else %} ✅ <strong>NO FAULT - System Safe</strong> ✅ {% endif %}
+          <div class="confidence">
+            Model Confidence: {{ result.confidence }}%
+          </div>
         </div>
+        {% endif %} {% if error %}
+        <div class="result fault"><strong>Error:</strong> {{ error }}</div>
+        {% endif %}
+      </div>
 
-        <footer>
-            Powered by Random Forest ML Model | Developed with Django
-        </footer>
+      <footer>Powered by Random Forest ML Model | Developed with Django</footer>
     </div>
-</body>
+    <script>
+      document.querySelectorAll("input").forEach((input) => {
+        const status = input.nextElementSibling; // assumes <small> is right after input
+        if (!status || !status.classList.contains("status")) return;
+
+        function updateStatus() {
+          const val = parseFloat(input.value) || 0;
+          let level = "low",
+            text = "Low";
+
+          // Add your conditions here per name (example for a few)
+          switch (input.name) {
+            case "humidity":
+              if (val > 85) {
+                level = "high";
+                text = "High (>85%)";
+              } else if (val > 65) {
+                level = "moderate";
+                text = "Moderate (65–85%)";
+              } else {
+                text = "Low (0–65%)";
+              }
+              break;
+            case "rainfall":
+              if (val > 30) {
+                level = "high";
+                text = "High (>30 mm)";
+              } else if (val > 5) {
+                level = "moderate";
+                text = "Moderate (5–30 mm)";
+              } else {
+                text = "Low (0–5 mm)";
+              }
+              break;
+            case "lightning":
+              if (val === 1) {
+                level = "high";
+                text = "High (Lightning)";
+              } else {
+                text = "Low (No lightning)";
+              }
+              break;
+            // ... add cases for all fields similarly
+            case "risk_score":
+              if (val > 60) {
+                level = "high";
+                text = "High (61–100)";
+              } else if (val > 30) {
+                level = "moderate";
+                text = "Moderate (31–60)";
+              } else {
+                text = "Low (0–30)";
+              }
+              break;
+            // Add remaining fields...
+          }
+
+          status.className = `status ${level}`;
+          status.textContent = text;
+        }
+
+        input.addEventListener("input", updateStatus);
+        updateStatus(); // initial
+      });
+    </script>
+  </body>
+</html> -->
+
+<!-- -------------------------------------------- option 1------------------------------------------------->
+<!-- 
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transmission Line Electrical Prediction System</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #2d74dd;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+      h1 {
+        margin: 0;
+        font-size: 32px;
+      }
+      .logout {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        background-color: #e74c3c; /* Red color */
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background 0.3s ease;
+      }
+      .logout:hover {
+        background-color: #c0392b;
+      }
+      .form-section {
+        padding: 40px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .field {
+        margin-bottom: 20px; /* Increased for status label space */
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+      }
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      input:focus {
+        border-color: #667eea;
+        outline: none;
+      }
+      .status {
+        display: block;
+        margin-top: 6px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .low {
+        color: #155724;
+        background: #d4edda;
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+      .moderate {
+        color: #856404;
+        background: #fff3cd;
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+      .high {
+        color: #721c24;
+        background: #f8d7da;
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+      button {
+        width: 100%;
+        padding: 16px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 30px;
+      }
+      button:hover {
+        background: #218838;
+      }
+      .result {
+        margin-top: 40px;
+        padding: 30px;
+        text-align: center;
+        border-radius: 12px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .fault {
+        background: #f8d7da;
+        color: #721c24;
+        border: 3px solid #dc3545;
+      }
+      .no-fault {
+        background: #d4edda;
+        color: #155724;
+        border: 3px solid #28a745;
+      }
+      .confidence {
+        font-size: 18px;
+        margin-top: 15px;
+        font-weight: normal;
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="/logout/" class="logout">Logout</a>
+        <h1>⚡ Transmission Line Electrical Prediction System</h1>
+        <p style="margin: 10px 0 0; opacity: 0.9">
+          Enter current system parameters to detect potential faults
+        </p>
+      </header>
+
+      <div class="form-section">
+        <form method="post">
+          {% csrf_token %}
+          <div class="grid">
+            <div class="field">
+              <label>Humidity (%)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="humidity"
+                value="50"
+                required
+              />
+              <small class="status low">Low (Safe: 0–65%)</small>
+            </div>
+
+            <div class="field">
+              <label>Rainfall (mm)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="rainfall"
+                value="10"
+                required
+              />
+              <small class="status moderate">Moderate (5–30 mm)</small>
+            </div>
+
+            <div class="field">
+              <label>Lightning (1=yes, 0=no)</label>
+              <input
+                type="number"
+                min="0"
+                max="1"
+                name="lightning"
+                value="0"
+                required
+              />
+              <small class="status low">Low (No lightning)</small>
+            </div>
+
+            <div class="field">
+              <label>Temperature (°C)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="temperature"
+                value="30"
+                required
+              />
+              <small class="status low">Low (Normal: 15–32°C)</small>
+            </div>
+
+            <div class="field">
+              <label>Wind Speed (km/h)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="wind_speed"
+                value="15"
+                required
+              />
+              <small class="status low">Low (Calm: 0–40 km/h)</small>
+            </div>
+
+            <div class="field">
+              <label>Weather Severity (1-10)</label>
+              <input
+                type="number"
+                min="1"
+                max="10"
+                name="weather_severity"
+                value="5"
+                required
+              />
+              <small class="status moderate">Moderate (4–6)</small>
+            </div>
+
+            <div class="field">
+              <label>Voltage Unbalance (%)</label>
+              <input
+                type="number"
+                step="0.01"
+                name="voltage_unbalance"
+                value="0.5"
+                required
+              />
+              <small class="status low">Low (Safe: 0–1.0%)</small>
+            </div>
+
+            <div class="field">
+              <label>Current Unbalance (%)</label>
+              <input
+                type="number"
+                step="0.01"
+                name="current_unbalance"
+                value="0.5"
+                required
+              />
+              <small class="status low">Low (Good: 0–5%)</small>
+            </div>
+
+            <div class="field">
+              <label>Power Factor</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="1"
+                name="power_factor"
+                value="0.95"
+                required
+              />
+              <small class="status low">Low risk (Good: 0.92–1.0)</small>
+            </div>
+
+            <div class="field">
+              <label>Frequency (Hz)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="frequency"
+                value="50"
+                required
+              />
+              <small class="status low">Low (Stable: 49.8–50.2 Hz)</small>
+            </div>
+
+            <div class="field">
+              <label>Line Loading (%)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="line_loading"
+                value="70"
+                required
+              />
+              <small class="status low">Low (Safe: 0–75%)</small>
+            </div>
+
+            <div class="field">
+              <label>Active Power (MW)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="active_power"
+                value="100"
+                required
+              />
+              <small class="status moderate"
+                >Moderate (Check line rating)</small
+              >
+            </div>
+
+            <div class="field">
+              <label>Reactive Power (MVAR)</label>
+              <input
+                type="number"
+                step="0.1"
+                name="reactive_power"
+                value="50"
+                required
+              />
+              <small class="status moderate">Moderate (System-dependent)</small>
+            </div>
+
+            <div class="field">
+              <label>Equipment Age (years)</label>
+              <input
+                type="number"
+                min="0"
+                name="equipment_age"
+                value="10"
+                required
+              />
+              <small class="status low">Low (Young: 0–15 years)</small>
+            </div>
+
+            <div class="field">
+              <label>Thermal Stress (1-10)</label>
+              <input
+                type="number"
+                min="1"
+                max="10"
+                name="thermal_stress"
+                value="5"
+                required
+              />
+              <small class="status moderate">Moderate (4–6)</small>
+            </div>
+
+            <div class="field">
+              <label>Risk Score (0-100)</label>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                name="risk_score"
+                value="40"
+                required
+              />
+              <small class="status moderate">Moderate (31–60)</small>
+            </div>
+          </div>
+
+          <button type="submit">Predict Fault Status</button>
+        </form>
+
+        {% if result %}
+        <div class="result {{ result.class }}">
+          {% if result.prediction == 1 %} 🚨 <strong>FAULT DETECTED</strong> 🚨
+          {% else %} ✅ <strong>NO FAULT - System Safe</strong> ✅ {% endif %}
+          <div class="confidence">
+            Model Confidence: {{ result.confidence }}%
+          </div>
+        </div>
+        {% endif %} {% if error %}
+        <div class="result fault"><strong>Error:</strong> {{ error }}</div>
+        {% endif %}
+      </div>
+
+      <footer>Powered by Random Forest ML Model | Developed with Django</footer>
+    </div>
+
+    <script>
+      document.querySelectorAll('input[type="number"]').forEach((input) => {
+        const status = input.nextElementSibling;
+        if (!status || !status.classList.contains("status")) return;
+
+        function updateStatus() {
+          const val = parseFloat(input.value) || 0;
+          let level = "low";
+          let text = "Low";
+
+          switch (input.name) {
+            case "humidity":
+              if (val > 85) {
+                level = "high";
+                text = "High (>85%) - Critical";
+              } else if (val > 65) {
+                level = "moderate";
+                text = "Moderate (65–85%) - Watch";
+              } else {
+                text = "Low (0–65%) - Safe";
+              }
+              break;
+            case "rainfall":
+              if (val > 30) {
+                level = "high";
+                text = "High (>30 mm) - Critical";
+              } else if (val > 5) {
+                level = "moderate";
+                text = "Moderate (5–30 mm) - Watch";
+              } else {
+                text = "Low (0–5 mm) - Safe";
+              }
+              break;
+            case "lightning":
+              if (val === 1) {
+                level = "high";
+                text = "High (Lightning present) - Critical";
+              } else {
+                text = "Low (No lightning) - Safe";
+              }
+              break;
+            case "temperature":
+              if (val > 42 || val < 10) {
+                level = "high";
+                text = "High (Extreme: <10 or >42°C)";
+              } else if (val > 32) {
+                level = "moderate";
+                text = "Moderate (32–42°C)";
+              } else {
+                text = "Low (15–32°C) - Normal";
+              }
+              break;
+            case "wind_speed":
+              if (val > 80) {
+                level = "high";
+                text = "High (>80 km/h) - Critical";
+              } else if (val > 40) {
+                level = "moderate";
+                text = "Moderate (40–80 km/h)";
+              } else {
+                text = "Low (0–40 km/h) - Calm";
+              }
+              break;
+            case "weather_severity":
+              if (val >= 7) {
+                level = "high";
+                text = "High (7–10) - Severe";
+              } else if (val >= 4) {
+                level = "moderate";
+                text = "Moderate (4–6)";
+              } else {
+                text = "Low (1–3) - Normal";
+              }
+              break;
+            case "voltage_unbalance":
+              if (val > 2.0) {
+                level = "high";
+                text = "High (>2.0%) - Poor";
+              } else if (val > 1.0) {
+                level = "moderate";
+                text = "Moderate (1.0–2.0%)";
+              } else {
+                text = "Low (0–1.0%) - Good";
+              }
+              break;
+            case "current_unbalance":
+              if (val > 12) {
+                level = "high";
+                text = "High (>12%) - Severe";
+              } else if (val > 5) {
+                level = "moderate";
+                text = "Moderate (5–12%)";
+              } else {
+                text = "Low (0–5%) - Good";
+              }
+              break;
+            case "power_factor":
+              if (val < 0.85) {
+                level = "high";
+                text = "High risk (<0.85) - Poor";
+              } else if (val < 0.92) {
+                level = "moderate";
+                text = "Moderate (0.85–0.92)";
+              } else {
+                text = "Low risk (0.92–1.0) - Good";
+              }
+              break;
+            case "frequency":
+              if (Math.abs(val - 50) > 0.5) {
+                level = "high";
+                text = "High deviation (>±0.5 Hz)";
+              } else if (Math.abs(val - 50) > 0.2) {
+                level = "moderate";
+                text = "Moderate (±0.2–0.5 Hz)";
+              } else {
+                text = "Low (±0.0–0.2 Hz) - Stable";
+              }
+              break;
+            case "line_loading":
+              if (val > 95) {
+                level = "high";
+                text = "High (>95%) - Overloaded";
+              } else if (val > 75) {
+                level = "moderate";
+                text = "Moderate (75–95%)";
+              } else {
+                text = "Low (0–75%) - Safe";
+              }
+              break;
+            case "active_power":
+              // Note: Depends on line rating; placeholder logic
+              if (val > 180) {
+                level = "high";
+                text = "High (Check rating)";
+              } else if (val > 120) {
+                level = "moderate";
+                text = "Moderate";
+              } else {
+                text = "Low/Normal";
+              }
+              break;
+            case "reactive_power":
+              // Highly system-dependent; simplified
+              if (Math.abs(val) > 80) {
+                level = "high";
+                text = "High |Q|";
+              } else if (Math.abs(val) > 40) {
+                level = "moderate";
+                text = "Moderate";
+              } else {
+                text = "Low";
+              }
+              break;
+            case "equipment_age":
+              if (val > 35) {
+                level = "high";
+                text = "High (>35 years) - Aged";
+              } else if (val > 15) {
+                level = "moderate";
+                text = "Moderate (15–35 years)";
+              } else {
+                text = "Low (0–15 years) - Young";
+              }
+              break;
+            case "thermal_stress":
+              if (val >= 7) {
+                level = "high";
+                text = "High (7–10) - Critical";
+              } else if (val >= 4) {
+                level = "moderate";
+                text = "Moderate (4–6)";
+              } else {
+                text = "Low (1–3) - Normal";
+              }
+              break;
+            case "risk_score":
+              if (val > 60) {
+                level = "high";
+                text = "High (61–100) - Critical";
+              } else if (val > 30) {
+                level = "moderate";
+                text = "Moderate (31–60)";
+              } else {
+                text = "Low (0–30) - Safe";
+              }
+              break;
+          }
+
+          status.className = `status ${level}`;
+          status.textContent = text;
+        }
+
+        input.addEventListener("input", updateStatus);
+        updateStatus(); // Run once on load
+      });
+    </script>
+  </body>
+</html> -->
+
+<!-- -------------------------------------------- option 1 End ------------------------------------------------->
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transmission Line Electrical Prediction System</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #00143e;
+        margin: 0;
+        padding: 15px; /* Reduced a bit for more content space */
+      }
+      .container {
+        max-width: 1400px; /* Increased max-width for wider screens */
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+      header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 25px 30px;
+        text-align: center;
+        position: relative;
+      }
+      h1 {
+        margin: 0;
+        font-size: 30px;
+      }
+      .logout {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        background-color: #e74c3c;
+        padding: 8px 18px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background 0.3s ease;
+      }
+      .logout:hover {
+        background-color: #c0392b;
+      }
+      .form-section {
+        padding: 30px 25px; /* Slightly reduced vertical padding */
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr; /* Default: 1 column on very small screens */
+        gap: 18px; /* Smaller gap on mobile */
+      }
+      /* Responsive column adjustments */
+      @media (min-width: 600px) {
+        .grid {
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          gap: 24px; /* More breathing room as columns appear */
+        }
+      }
+      @media (min-width: 1200px) {
+        .grid {
+          grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+          gap: 28px;
+        }
+      }
+      .field {
+        margin-bottom: 0; /* No extra margin — gap handles it */
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #333;
+        white-space: nowrap; /* Prevent label wrapping awkwardly */
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+      }
+      input:focus {
+        border-color: #667eea;
+        outline: none;
+      }
+      .status {
+        display: block;
+        margin-top: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 3px 8px;
+        border-radius: 4px;
+        line-height: 1.4;
+      }
+      .low    { color: #155724; background: #d4edda; }
+      .moderate { color: #856404; background: #fff3cd; }
+      .high   { color: #721c24; background: #f8d7da; }
+      button {
+        width: 100%;
+        padding: 16px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 35px;
+        transition: background 0.3s;
+      }
+      button:hover {
+        background: #218838;
+      }
+      .result {
+        margin: 40px 15px 20px;
+        padding: 25px;
+        text-align: center;
+        border-radius: 12px;
+        font-size: 22px;
+        font-weight: bold;
+      }
+      .fault {
+        background: #f8d7da;
+        color: #721c24;
+        border: 3px solid #dc3545;
+      }
+      .no-fault {
+        background: #d4edda;
+        color: #155724;
+        border: 3px solid #28a745;
+      }
+      .confidence {
+        font-size: 18px;
+        margin-top: 12px;
+        font-weight: normal;
+      }
+      footer {
+        text-align: center;
+        padding: 18px;
+        color: #666;
+        font-size: 14px;
+        border-top: 1px solid #eee;
+      }
+
+      /* Extra touch: make fields feel less stretched on ultra-wide */
+      @media (min-width: 1800px) {
+        .grid {
+          max-width: 1600px;
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="/logout/" class="logout">Logout</a>
+        <h1>⚡ Transmission Line Electrical Prediction System</h1>
+        <p style="margin: 8px 0 0; opacity: 0.9">
+          Enter current system parameters to detect potential faults
+        </p>
+      </header>
+
+      <div class="form-section">
+        <form method="post">
+          {% csrf_token %}
+          <div class="grid">
+
+            <div class="field">
+              <label>Humidity (%)</label>
+              <input type="number" step="0.1" name="humidity" value="50" required />
+              <small class="status low">Low (Safe: 0–65%)</small>
+            </div>
+
+            <div class="field">
+              <label>Rainfall (mm)</label>
+              <input type="number" step="0.1" name="rainfall" value="10" required />
+              <small class="status moderate">Moderate (5–30 mm)</small>
+            </div>
+
+            <div class="field">
+              <label>Lightning (1=yes, 0=no)</label>
+              <input type="number" min="0" max="1" name="lightning" value="0" required />
+              <small class="status low">Low (No lightning)</small>
+            </div>
+
+            <div class="field">
+              <label>Temperature (°C)</label>
+              <input type="number" step="0.1" name="temperature" value="30" required />
+              <small class="status low">Low (Normal: 15–32°C)</small>
+            </div>
+
+            <div class="field">
+              <label>Wind Speed (km/h)</label>
+              <input type="number" step="0.1" name="wind_speed" value="15" required />
+              <small class="status low">Low (Calm: 0–40 km/h)</small>
+            </div>
+
+            <div class="field">
+              <label>Weather Severity (1-10)</label>
+              <input type="number" min="1" max="10" name="weather_severity" value="5" required />
+              <small class="status moderate">Moderate (4–6)</small>
+            </div>
+
+            <div class="field">
+              <label>Voltage Unbalance (%)</label>
+              <input type="number" step="0.01" name="voltage_unbalance" value="0.5" required />
+              <small class="status low">Low (Safe: 0–1.0%)</small>
+            </div>
+
+            <div class="field">
+              <label>Current Unbalance (%)</label>
+              <input type="number" step="0.01" name="current_unbalance" value="0.5" required />
+              <small class="status low">Low (Good: 0–5%)</small>
+            </div>
+
+            <div class="field">
+              <label>Power Factor</label>
+              <input type="number" step="0.01" min="0" max="1" name="power_factor" value="0.95" required />
+              <small class="status low">Low risk (Good: 0.92–1.0)</small>
+            </div>
+
+            <div class="field">
+              <label>Frequency (Hz)</label>
+              <input type="number" step="0.1" name="frequency" value="50" required />
+              <small class="status low">Low (Stable: 49.8–50.2 Hz)</small>
+            </div>
+
+            <div class="field">
+              <label>Line Loading (%)</label>
+              <input type="number" step="0.1" name="line_loading" value="70" required />
+              <small class="status low">Low (Safe: 0–75%)</small>
+            </div>
+
+            <div class="field">
+              <label>Active Power (MW)</label>
+              <input type="number" step="0.1" name="active_power" value="100" required />
+              <small class="status moderate">Moderate (Check line rating)</small>
+            </div>
+
+            <div class="field">
+              <label>Reactive Power (MVAR)</label>
+              <input type="number" step="0.1" name="reactive_power" value="50" required />
+              <small class="status moderate">Moderate (System-dependent)</small>
+            </div>
+
+            <div class="field">
+              <label>Equipment Age (years)</label>
+              <input type="number" min="0" name="equipment_age" value="10" required />
+              <small class="status low">Low (Young: 0–15 years)</small>
+            </div>
+
+            <div class="field">
+              <label>Thermal Stress (1-10)</label>
+              <input type="number" min="1" max="10" name="thermal_stress" value="5" required />
+              <small class="status moderate">Moderate (4–6)</small>
+            </div>
+
+            <div class="field">
+              <label>Risk Score (0-100)</label>
+              <input type="number" min="0" max="100" name="risk_score" value="40" required />
+              <small class="status moderate">Moderate (31–60)</small>
+            </div>
+
+          </div>
+
+          <button type="submit">Predict Fault Status</button>
+        </form>
+
+        <!-- {% if result %}
+        <div class="result {{ result.class }}">
+          {% if result.prediction == 1 %} 🚨 <strong>FAULT DETECTED</strong> 🚨
+          {% else %} ✅ <strong>NO FAULT - System Safe</strong> ✅ {% endif %}
+          <div class="confidence">
+            Model Confidence: {{ result.confidence }}%
+          </div>
+        </div>
+        {% endif %} {% if error %}
+        <div class="result fault"><strong>Error:</strong> {{ error }}</div>
+        {% endif %}
+      </div> -->
+      {% if result %}
+    <div class="result {{ result.class }}">
+    {% if result.prediction == 1 %}
+        🚨 <strong>FAULT DETECTED</strong> 🚨
+
+        {% if result.high_params %}
+        <div style="margin: 20px 0; text-align: left; font-size: 17px; line-height: 1.5;">
+            <strong>Possible contributing factors (high-risk values):</strong>
+            <ul style="margin: 12px 0 0 24px; padding: 0; list-style-type: disc;">
+                {% for item in result.high_params %}
+                <li>{{ item }}</li>
+                {% empty %}
+                <li>(No extreme values detected — model may be using complex interactions)</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+    {% else %}
+        ✅ <strong>NO FAULT - System Safe</strong> ✅
+    {% endif %}
+
+    <div class="confidence" style="margin-top: 20px;">
+        Model Confidence: {{ result.confidence }}% 
+        {% if result.probability_fault %}
+        (Fault probability: {{ result.probability_fault }}%)
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+      <footer>Powered by Random Forest ML Model | Developed with Django</footer>
+    </div>
+
+    <!-- JavaScript for live status updates (unchanged) -->
+    <script>
+      document.querySelectorAll('input[type="number"]').forEach(input => {
+        const status = input.nextElementSibling;
+        if (!status || !status.classList.contains('status')) return;
+
+        function updateStatus() {
+          const val = parseFloat(input.value) || 0;
+          let level = 'low';
+          let text = 'Low';
+
+          switch (input.name) {
+            case 'humidity':
+              if (val > 85) { level = 'high'; text = 'High (>85%) - Critical'; }
+              else if (val > 65) { level = 'moderate'; text = 'Moderate (65–85%) - Watch'; }
+              else { text = 'Low (0–65%) - Safe'; }
+              break;
+            case 'rainfall':
+              if (val > 30) { level = 'high'; text = 'High (>30 mm) - Critical'; }
+              else if (val > 5) { level = 'moderate'; text = 'Moderate (5–30 mm) - Watch'; }
+              else { text = 'Low (0–5 mm) - Safe'; }
+              break;
+            case 'lightning':
+              if (val === 1) { level = 'high'; text = 'High (Lightning present) - Critical'; }
+              else { text = 'Low (No lightning) - Safe'; }
+              break;
+            case 'temperature':
+              if (val > 42 || val < 10) { level = 'high'; text = 'High (Extreme: <10 or >42°C)'; }
+              else if (val > 32) { level = 'moderate'; text = 'Moderate (32–42°C)'; }
+              else { text = 'Low (15–32°C) - Normal'; }
+              break;
+            case 'wind_speed':
+              if (val > 80) { level = 'high'; text = 'High (>80 km/h) - Critical'; }
+              else if (val > 40) { level = 'moderate'; text = 'Moderate (40–80 km/h)'; }
+              else { text = 'Low (0–40 km/h) - Calm'; }
+              break;
+            case 'weather_severity':
+              if (val >= 7) { level = 'high'; text = 'High (7–10) - Severe'; }
+              else if (val >= 4) { level = 'moderate'; text = 'Moderate (4–6)'; }
+              else { text = 'Low (1–3) - Normal'; }
+              break;
+            case 'voltage_unbalance':
+              if (val > 2.0) { level = 'high'; text = 'High (>2.0%) - Poor'; }
+              else if (val > 1.0) { level = 'moderate'; text = 'Moderate (1.0–2.0%)'; }
+              else { text = 'Low (0–1.0%) - Good'; }
+              break;
+            case 'current_unbalance':
+              if (val > 12) { level = 'high'; text = 'High (>12%) - Severe'; }
+              else if (val > 5) { level = 'moderate'; text = 'Moderate (5–12%)'; }
+              else { text = 'Low (0–5%) - Good'; }
+              break;
+            case 'power_factor':
+              if (val < 0.85) { level = 'high'; text = 'High risk (<0.85) - Poor'; }
+              else if (val < 0.92) { level = 'moderate'; text = 'Moderate (0.85–0.92)'; }
+              else { text = 'Low risk (0.92–1.0) - Good'; }
+              break;
+            case 'frequency':
+              if (Math.abs(val - 50) > 0.5) { level = 'high'; text = 'High deviation (>±0.5 Hz)'; }
+              else if (Math.abs(val - 50) > 0.2) { level = 'moderate'; text = 'Moderate (±0.2–0.5 Hz)'; }
+              else { text = 'Low (±0.0–0.2 Hz) - Stable'; }
+              break;
+            case 'line_loading':
+              if (val > 95) { level = 'high'; text = 'High (>95%) - Overloaded'; }
+              else if (val > 75) { level = 'moderate'; text = 'Moderate (75–95%)'; }
+              else { text = 'Low (0–75%) - Safe'; }
+              break;
+            case 'active_power':
+              if (val > 180) { level = 'high'; text = 'High (Check rating)'; }
+              else if (val > 120) { level = 'moderate'; text = 'Moderate'; }
+              else { text = 'Low/Normal'; }
+              break;
+            case 'reactive_power':
+              if (Math.abs(val) > 80) { level = 'high'; text = 'High |Q|'; }
+              else if (Math.abs(val) > 40) { level = 'moderate'; text = 'Moderate'; }
+              else { text = 'Low'; }
+              break;
+            case 'equipment_age':
+              if (val > 35) { level = 'high'; text = 'High (>35 years) - Aged'; }
+              else if (val > 15) { level = 'moderate'; text = 'Moderate (15–35 years)'; }
+              else { text = 'Low (0–15 years) - Young'; }
+              break;
+            case 'thermal_stress':
+              if (val >= 7) { level = 'high'; text = 'High (7–10) - Critical'; }
+              else if (val >= 4) { level = 'moderate'; text = 'Moderate (4–6)'; }
+              else { text = 'Low (1–3) - Normal'; }
+              break;
+            case 'risk_score':
+              if (val > 60) { level = 'high'; text = 'High (61–100) - Critical'; }
+              else if (val > 30) { level = 'moderate'; text = 'Moderate (31–60)'; }
+              else { text = 'Low (0–30) - Safe'; }
+              break;
+          }
+
+          status.className = `status ${level}`;
+          status.textContent = text;
+        }
+
+        input.addEventListener('input', updateStatus);
+        updateStatus();
+      });
+    </script>
+  </body>
 </html>
