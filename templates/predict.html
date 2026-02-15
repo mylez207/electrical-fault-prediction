@@ -1096,6 +1096,38 @@
       .low    { color: #155724; background: #d4edda; }
       .moderate { color: #856404; background: #fff3cd; }
       .high   { color: #721c24; background: #f8d7da; }
+      .level-1 {
+                  color: #155724;
+                  background-color: #d4edda;
+                  border-left: 5px solid #28a745;
+                }
+      .level-2 {
+  color: #856404;
+  background-color: #fff3cd;
+  border-left: 5px solid #ffc107;
+              }
+      .level-3 {
+  color: #7a4f01;
+  background-color: #ffe5b4;
+  border-left: 5px solid #fd7e14;
+              }
+      .level-4 {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-left: 5px solid #dc3545;
+        }
+      .level-5 {
+  color: #ffffff;
+  background-color: #8b0000;
+  border-left: 5px solid #5a0000;
+      }
+      .status {
+                display: inline-block;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 0.85rem;
+                margin-top: 4px;
+              }
       button {
         width: 100%;
         padding: 16px;
@@ -1170,31 +1202,31 @@
             <div class="field">
               <label>Humidity (%)</label>
               <input type="number" step="0.1" name="humidity" value="50" required />
-              <small class="status low">Low (Safe: 0–65%)</small>
+              <small class="status level-1">Comfort (30–50%)</small>
             </div>
 
             <div class="field">
               <label>Rainfall (mm)</label>
               <input type="number" step="0.1" name="rainfall" value="10" required />
-              <small class="status moderate">Moderate (5–30 mm)</small>
+              <small class="status level-3">Heavy (4–16 mm)</small>
             </div>
 
             <div class="field">
               <label>Lightning (1=yes, 0=no)</label>
               <input type="number" min="0" max="1" name="lightning" value="0" required />
-              <small class="status low">Low (No lightning)</small>
+              <small class="status level-1">Low Activity (&lt;20 strikes)</small>
             </div>
 
             <div class="field">
               <label>Temperature (°C)</label>
               <input type="number" step="0.1" name="temperature" value="30" required />
-              <small class="status low">Low (Normal: 15–32°C)</small>
+              <small class="status level-2">Warm (25–30°C)</small>
             </div>
 
             <div class="field">
               <label>Wind Speed (km/h)</label>
               <input type="number" step="0.1" name="wind_speed" value="15" required />
-              <small class="status low">Low (Calm: 0–40 km/h)</small>
+              <small class="status level-1">Light Breeze (1–19 km/h)</small>
             </div>
 
             <div class="field">
@@ -1327,34 +1359,125 @@
 
           switch (input.name) {
             case 'humidity':
-              if (val > 85) { level = 'high'; text = 'High (>85%) - Critical'; }
-              else if (val > 65) { level = 'moderate'; text = 'Moderate (65–85%) - Watch'; }
-              else { text = 'Low (0–65%) - Safe'; }
-              break;
+                  if (val >= 70) {
+      level = 'level-4';
+      text = 'Excessive (70–100%)';
+    }
+                  else if (val >= 50) {
+      level = 'level-3';
+      text = 'High (50–70%)';
+    }
+                  else if (val >= 30) {
+      level = 'level-2';
+      text = 'Comfort (30–50%)';
+    }
+                  else {
+      level = 'level-1';
+      text = 'Low (0–30%)';
+    }
+                  break;
             case 'rainfall':
-              if (val > 30) { level = 'high'; text = 'High (>30 mm) - Critical'; }
-              else if (val > 5) { level = 'moderate'; text = 'Moderate (5–30 mm) - Watch'; }
-              else { text = 'Low (0–5 mm) - Safe'; }
-              break;
+    if (val > 50) {
+      level = 'level-5';
+      text = 'Extreme (>50 mm)';
+    }
+    else if (val > 16) {
+      level = 'level-4';
+      text = 'Very Heavy (16–50 mm)';
+    }
+    else if (val > 4) {
+      level = 'level-3';
+      text = 'Heavy (4–16 mm)';
+    }
+    else if (val > 1) {
+      level = 'level-2';
+      text = 'Moderate (1–4 mm)';
+    }
+    else {
+      level = 'level-1';
+      text = 'Light / Very Light (<1 mm)';
+    }
+    break;
             case 'lightning':
-              if (val === 1) { level = 'high'; text = 'High (Lightning present) - Critical'; }
-              else { text = 'Low (No lightning) - Safe'; }
-              break;
+    if (val > 50) {
+      level = 'level-5';
+      text = 'High Activity (>50 strikes)';
+    }
+    else if (val >= 20) {
+      level = 'level-3';
+      text = 'Moderate Activity (20–50 strikes)';
+    }
+    else {
+      level = 'level-1';
+      text = 'Low Activity (<20 strikes)';
+    }
+    break;
             case 'temperature':
-              if (val > 42 || val < 10) { level = 'high'; text = 'High (Extreme: <10 or >42°C)'; }
-              else if (val > 32) { level = 'moderate'; text = 'Moderate (32–42°C)'; }
-              else { text = 'Low (15–32°C) - Normal'; }
-              break;
+    if (val > 45) {
+      level = 'level-5';
+      text = 'Extreme Hot (>45°C)';
+    }
+    else if (val > 35) {
+      level = 'level-4';
+      text = 'Very Hot (35–45°C)';
+    }
+    else if (val > 30) {
+      level = 'level-3';
+      text = 'Hot (30–35°C)';
+    }
+    else if (val >= 25) {
+      level = 'level-2';
+      text = 'Warm (25–30°C)';
+    }
+    else if (val >= 10) {
+      level = 'level-1';
+      text = 'Cool / Mild (10–25°C)';
+    }
+    else {
+      level = 'level-4';
+      text = 'Very Cold (<10°C)';
+    }
+    break;
             case 'wind_speed':
-              if (val > 80) { level = 'high'; text = 'High (>80 km/h) - Critical'; }
-              else if (val > 40) { level = 'moderate'; text = 'Moderate (40–80 km/h)'; }
-              else { text = 'Low (0–40 km/h) - Calm'; }
-              break;
+    if (val >= 118) {
+      level = 'level-5';
+      text = 'Hurricane (118+ km/h)';
+    }
+    else if (val >= 89) {
+      level = 'level-4';
+      text = 'Storm (89–117 km/h)';
+    }
+    else if (val >= 62) {
+      level = 'level-3';
+      text = 'Gale (62–88 km/h)';
+    }
+    else if (val >= 39) {
+      level = 'level-2';
+      text = 'Strong (39–61 km/h)';
+    }
+    else {
+      level = 'level-1';
+      text = 'Calm / Light (<39 km/h)';
+    }
+    break;
             case 'weather_severity':
-              if (val >= 7) { level = 'high'; text = 'High (7–10) - Severe'; }
-              else if (val >= 4) { level = 'moderate'; text = 'Moderate (4–6)'; }
-              else { text = 'Low (1–3) - Normal'; }
-              break;
+    if (val >= 10) {
+      level = 'level-5';
+      text = 'Storm (10+)';
+    }
+    else if (val >= 7) {
+      level = 'level-4';
+      text = 'Strong (7–9)';
+    }
+    else if (val >= 4) {
+      level = 'level-3';
+      text = 'Moderate (4–6)';
+    }
+    else {
+      level = 'level-1';
+      text = 'Light (0–3)';
+    }
+    break;
             case 'voltage_unbalance':
               if (val > 2.0) { level = 'high'; text = 'High (>2.0%) - Poor'; }
               else if (val > 1.0) { level = 'moderate'; text = 'Moderate (1.0–2.0%)'; }
@@ -1407,7 +1530,10 @@
               break;
           }
 
-          status.className = `status ${level}`;
+          status.classList.remove(
+              'level-1','level-2','level-3','level-4','level-5'
+            );
+          status.classList.add(level);
           status.textContent = text;
         }
 
